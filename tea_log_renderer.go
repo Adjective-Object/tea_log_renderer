@@ -145,7 +145,7 @@ func (r *TeaLogRenderer) flush() {
 	}
 
 	// Clear any lines we painted in the last render.
-	if realLinesRendered > 0 {
+	if r.linesRendered > 0 {
 		skipped := 0
 		for i := r.linesRendered - 1; i > 0; i-- {
 			// If the number of lines we want to render hasn't increased and
