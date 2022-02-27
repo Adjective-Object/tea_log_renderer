@@ -145,24 +145,24 @@ func (r *TeaLogRenderer) flush() {
 	}
 
 	// Clear any lines we painted in the last render.
-	if r.linesRendered > 0 {
+	if realLinesRendered > 0 {
 		skipped := 0
 		for i := r.linesRendered - 1; i > 0; i-- {
 			// If the number of lines we want to render hasn't increased and
 			// new line is the same as the old line we can skip rendering for
 			// this line as a performance optimization.
 			if (len(newLines) <= len(oldLines)) && (len(newLines) > i && len(oldLines) > i) && (newLines[i] == oldLines[i]) {
-				skipLines[i] = struct{}{}
+				// skipLines[i] = struct{}{}
 				skipped += 1
 			} else {
-				cursorUp(out, skipped)
+				cursorUp(out, skipped+1)
 				skipped = 0
 				// otherwise, clear the line so the new rendering can write into it
 				clearLine(out)
 			}
 		}
-		if skipped > 1 {
-			cursorUp(out, skipped-1)
+		if skipped >= 1 {
+			cursorUp(out, skipped)
 		}
 
 		// here, the cursor is back at the start of the old buffer, with some lines cleared
